@@ -1,8 +1,106 @@
-import { integer, pgTable, varchar } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { date, integer, pgEnum, pgTable, primaryKey, timestamp, varchar } from "drizzle-orm/pg-core";
+
+export const eventTypeEnum = pgEnum("event-type", ["in person", "online"]);
+export const eventCategoryEnum = pgEnum("event-category", [
+  "music", 
+  "educational",
+  "business", 
+  "technology", 
+  "health",
+  "arts",
+  "sports",
+  "entertainment",
+  "science",
+  "networking",
+  "charity",
+  "fashion",
+  "cultural",
+
+]);
+const timestamps = {
+  updated_at: timestamp(),
+  created_at: timestamp().defaultNow().notNull(),
+  deleted_at: timestamp(),
+}
+
 
 export const usersTable = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
-  age: integer().notNull(),
   email: varchar({ length: 255 }).notNull().unique(),
 });
+
+export const usersRelations = relations(usersTable, ({ many }) => ({
+  events: many(eventsTable),
+
+}));
+
+export const eventsTable = pgTable("events", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar({ length: 255 }).notNull(),
+  fees: integer().notNull(),
+  description:varchar().notNull(),
+  date:date().notNull(),
+  location:varchar(),
+  totalAudienceLimit:integer().notNull(),
+  registrationDeadline: timestamp(),
+  eventTypeId: integer().references(() => eventTypeTable.id).notNull(),
+  categoryId: integer().references(() => eventCategoryTable.id).notNull(),
+  organizerEmail: varchar({ length: 255 }).notNull().unique(),
+  ...timestamps
+
+});
+
+export const eventsRelations = relations(eventsTable, ({one , many }) => ({
+  attendees: many(usersTable),
+type:one(eventTypeTable ,{
+  fields: [eventsTable.eventTypeId],
+  references: [eventTypeTable.id],
+}),
+category: one(eventCategoryTable, {
+  fields: [eventsTable.categoryId],
+  references: [eventCategoryTable.id],
+}),
+}));
+
+export const usersToEventsTable = pgTable("users_to_events",{
+      userId: integer("user_id")
+          .notNull()
+          .references(() => usersTable.id),
+      eventId: integer("event_id")
+          .notNull()
+          .references(() => eventsTable.id),
+  },
+  (t) => ({
+      pk: primaryKey({ columns: [t.userId, t.eventId] })
+  })
+);
+
+export const usersToEventsRelations  = relations(usersToEventsTable, ({ one }) => ({
+  user: one(usersTable, {
+      fields: [usersToEventsTable.userId],
+      references: [usersTable.id],
+  }),
+  event: one(eventsTable, {
+      fields: [usersToEventsTable.eventId],
+      references: [eventsTable.id],
+  }),
+}));
+
+export const eventTypeTable=pgTable("event_type", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  type:eventTypeEnum().notNull()
+})
+export const eventTypeRelations = relations(eventTypeTable, ({many }) => ({
+  events: many(eventsTable),
+}));
+
+export const eventCategoryTable = pgTable("event_category", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: eventCategoryEnum().notNull()
+});
+export const eventCategoryRelations = relations(eventCategoryTable, ({ many }) => ({
+  events: many(eventsTable),
+}));
+
