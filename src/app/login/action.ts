@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { createSession } from "../lib/session";
+import { createSession, deleteSession } from "../lib/session";
 
 const testUser = {
     id: "1",
@@ -38,8 +38,8 @@ const testUser = {
       await createSession(testUser.id);
    redirect("/dashboard")
   }
-  export async function logout() {}
+  export async function logout() {
+    await deleteSession();
+  redirect("/login");
+  }
 
-// function createSession(id: string) {
-//     throw new Error("Function not implemented.");
-// }
