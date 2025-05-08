@@ -1,4 +1,6 @@
-:root {
+@import "tailwindcss";
+
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -39,4 +41,13 @@ a {
   html {
     color-scheme: dark;
   }
+} */
+
+body {
+  @apply bg-grayscale-800 p-4 font-manrope text-white;
+}
+
+
+input {
+  @apply rounded-md border-2 border-grayscale-700 bg-grayscale-700 px-2 py-1 text-white shadow-lg outline-none  focus:border-primary-500;
 }

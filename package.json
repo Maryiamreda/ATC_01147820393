@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.5",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/validator": "^13.15.0",
@@ -17,9 +18,11 @@
     "drizzle-orm": "^0.43.1",
     "jose": "^6.0.11",
     "next": "15.3.2",
+    "postcss": "^8.5.3",
     "postgres": "^3.4.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "tailwindcss": "^4.1.5",
     "validator": "^13.15.0",
     "zod": "^3.24.4"
   },

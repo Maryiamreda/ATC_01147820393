@@ -38,7 +38,7 @@ return (
 const SubmitButton=()=>{
 const{pending} =useFormStatus(); //access to a pending property
 return(
-    <button disabled={pending} type='submit'>
+    <button disabled={pending} type='submit' className='rounded-md bg-gradient-to-r from-primary-500 to-primary-700 px-6 py-2 font-semibold text-black hover:opacity-50 disabled:from-grayscale-700 disabled:to-grayscale-700 disabled:text-white disabled:opacity-50'>
         Login
     </button>
 )
