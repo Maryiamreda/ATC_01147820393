@@ -18,8 +18,35 @@ type LoginCredentials = {
     password: string;
   };
  
+type AuthResponse = {
+  success: boolean;
+  message: string;
+  data?: {
+    user?: {
+      id: string | number;
+      username: string;
+      email: string;
+    };
+    userId?: string | number;
+    token?: string;
+  };
+};
+
+
+export async function getallUsers() {
+   try{
+          const users = await db.select()
+          .from(schema.usersTable);
+          return users;
+      
+      }catch(err){
+          console.error("Error fetching Events", err);
+          throw err;
+      }
+}
+
 //create user account 
-async function createUser(userData:UserData) {
+export async function createUser(userData:UserData) {
     try{
         if (!userData.username || !userData.email  || !userData.password) {
             throw new Error("Missing required user information");
@@ -31,6 +58,8 @@ async function createUser(userData:UserData) {
             return { success: false, message: "Enter Strong Password" }
 
         }
+
+console.log(userData);
         const existingUsers= await db.select()
         .from(schema.usersTable).where(eq(schema.usersTable.email, userData.email));
         if(existingUsers.length > 0){
@@ -48,13 +77,20 @@ async function createUser(userData:UserData) {
           email: userData.email,
           password: hashedPassword
         }).returning();
+
+
         const token = jwt.sign({ userId: newUser[0].id }, process.env.JWT_SECRET!, { expiresIn: '1d' });
 
         return {
             success: true,
             message: "User created successfully",
             data: {
-              newUser , token
+
+ user: {
+          id: newUser[0].id,
+          username: newUser[0].username,
+          email: newUser[0].email
+        }, token
             }
         }
     }catch(err){
@@ -66,8 +102,7 @@ async function createUser(userData:UserData) {
 
 
 async function userLogin(credentials: LoginCredentials , 
-   
-  res: NextApiResponse
+  res?: NextApiResponse
 ) {
   try{
     const { email, password } = credentials;
@@ -93,7 +128,7 @@ async function userLogin(credentials: LoginCredentials ,
     if (!isMatch) {
         return { 
           success: false, 
-          message: "Invalid credentials" 
+          message: "Invalid email or password" 
         };
       }
       const token = jwt.sign(
@@ -106,6 +141,7 @@ async function userLogin(credentials: LoginCredentials ,
         success: true, 
         message: "Login successful",
         data: {
+          userId: user.id,
           token
         }, 
     };
@@ -116,3 +152,5 @@ catch(err){
     throw err;
 }
     }
+
+ 

@@ -1,46 +1,77 @@
 "use client";
 
 import React, { useActionState } from 'react';
-import { login } from './action';
+import { createAccount } from './action';
 import { useFormStatus } from 'react-dom';
 
-const Form = () => {
-const [state, loginAction] = useActionState(login, undefined); //take a server action , gives you back the actual action property you can put on a form , state get updated while the action is running 
-return (
-<form action={loginAction}>
+const CreateAccountForm = () => {
+  const [state, createAccountAction] = useActionState(createAccount, undefined);
+  
+  return (
+    <form action={createAccountAction} className="space-y-4">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="username" className="text-sm font-medium">Username</label>
+        <input 
+          id="username" 
+          name="username" 
+          placeholder="Username" 
+          className="rounded-md border border-gray-300 px-3 py-2"
+        />
+      </div>
+      {state?.errors?.username && (
+        <p className="text-red-500">{state.errors.username}</p>
+      )}
 
-
-<div className="flex flex-col gap-2">
-        <input id="email" name="email" placeholder="Email" />
+      <div className="flex flex-col gap-2">
+        <label htmlFor="email" className="text-sm font-medium">Email</label>
+        <input 
+          id="email" 
+          name="email" 
+          placeholder="Email" 
+          className="rounded-md border border-gray-300 px-3 py-2"
+        />
       </div>
       {state?.errors?.email && (
         <p className="text-red-500">{state.errors.email}</p>
       )}
 
       <div className="flex flex-col gap-2">
+        <label htmlFor="password" className="text-sm font-medium">Password</label>
         <input
           id="password"
           name="password"
           type="password"
           placeholder="Password"
+          className="rounded-md border border-gray-300 px-3 py-2"
         />
       </div>
       {state?.errors?.password && (
         <p className="text-red-500">{state.errors.password}</p>
       )}
 
-
-
-
-<SubmitButton/>
-</form>  );
+       
+      <SubmitButton />
+      
+      <div className="text-center mt-4">
+        <p className="text-sm text-gray-600">
+          Already have an account? <a href="/login" className="text-blue-600 hover:underline">Login here</a>
+        </p>
+      </div>
+    </form>
+  );
 }
-const SubmitButton=()=>{
-const{pending} =useFormStatus(); //access to a pending property
-return(
-    <button disabled={pending} type='submit' className='rounded-md bg-gradient-to-r from-primary-500 to-primary-700 px-6 py-2 font-semibold text-black hover:opacity-50 disabled:from-grayscale-700 disabled:to-grayscale-700 disabled:text-white disabled:opacity-50'>
-        Login
+
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+  return (
+    <button 
+      disabled={pending} 
+      type='submit' 
+      className=''
+    >
+      {pending ? 'Creating Account...' : 'Create Account'}
     </button>
-)
+  );
 }
-export default Form;
+
+export default CreateAccountForm;

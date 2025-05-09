@@ -41,6 +41,7 @@ export const usersRelations = relations(usersTable, ({ many }) => ({
 export const eventsTable = pgTable("events", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
+  image:varchar().notNull(),
   fees: integer().notNull(),
   description:varchar().notNull(),
   date:date().notNull(),

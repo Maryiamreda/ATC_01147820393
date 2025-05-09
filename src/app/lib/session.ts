@@ -4,13 +4,28 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
 const secretKey = process.env.SESSION_SECRET;
-const encodedKey = new TextEncoder().encode(secretKey);
+const encodedKey = new TextEncoder().encode(secretKey); //encoding the secret key from  .env into a format that the JWT library can use for encryption
+
+
+
+  export async function encrypt(payload: SessionPayload) {
+    return new SignJWT(payload)
+      .setProtectedHeader({ alg: "HS256" })
+      .setIssuedAt()
+      .setExpirationTime("7d")
+      .sign(encodedKey); //signs the JWT using the encoded secret key
+  }
+  
+
 
 export async function createSession(userId: string) {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-    const session = await encrypt({ userId, expiresAt }); //jwt
+    const session = await encrypt({ userId, expiresAt }); //jwt token
+    const cookieStore = await cookies();
+
     // @ts-ignore
-    cookies().set("session", session, {
+    cookieStore.set("session", session, {
+      //Using HTTP-only cookies 
       httpOnly: true,
       secure: true,
       expires: expiresAt,
@@ -27,15 +42,6 @@ type SessionPayload = {
     expiresAt: Date;
   };
 
-
-  export async function encrypt(payload: SessionPayload) {
-    return new SignJWT(payload)
-      .setProtectedHeader({ alg: "HS256" })
-      .setIssuedAt()
-      .setExpirationTime("7d")
-      .sign(encodedKey);
-  }
-  
 
   export async function decrypt(session: string | undefined = "") {
   try {
