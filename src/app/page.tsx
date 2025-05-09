@@ -6,7 +6,7 @@ export default async function UsersPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">All Users</h1>
+      <h1 className="text-6xl font-bold mb-4">All Users</h1>
       <ul className="space-y-2">
         {users.map((user: any) => (
           <li key={user.id} className="p-4 bg-gray-100 rounded">
