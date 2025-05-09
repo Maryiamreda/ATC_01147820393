@@ -62,6 +62,8 @@ export async function createAccount(prevState: any, formData: FormData) {
   
   const { username, email, password } = result.data;
   console.log(result.data)
+    let userId;
+
   try {
     // Use your createUser function from the controller
     const response = await createUser({ username, email, password });
@@ -85,13 +87,13 @@ export async function createAccount(prevState: any, formData: FormData) {
     }
 
     // Get the user ID from the response
-    const userId = String(response.data.user.id);
+     userId = String(response.data.user.id);
     console.log(userId)
     // Create session for the new user
-    await createSession(userId);
+    // await createSession(userId);
     
     // Redirect to dashboard after successful account creation and login
-    redirect("/dashboard");
+    // redirect("/dashboard");
   } catch (error) {
     console.error("Error creating account:", error);
     return {
@@ -100,6 +102,14 @@ export async function createAccount(prevState: any, formData: FormData) {
       },
     };
   }
+
+
+  // If we got here, account creation was successful
+  // Create session for the new user outside the try-catch
+  await createSession(userId);
+  
+  // Redirect outside the try-catch
+  redirect("/dashboard");
 }
 
 
