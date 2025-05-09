@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSession, deleteSession } from "../lib/session";
-import { createUser } from '../../../backend/controllers/userControllers'
+import { createUser, userLogin } from '../../../backend/controllers/userControllers'
 
 const testUser = {
     id: "1",
@@ -38,17 +38,52 @@ const loginSchema = z.object({
           errors: result.error.flatten().fieldErrors,
         };
       }
+
       const { email, password } = result.data;
-      if (email !== testUser.email || password !== testUser.password) {
-        return {
-          errors: {
-            email: ["Invalid email or password"],
-          },
-        };
-      }
-      await createSession(testUser.id);
-      redirect("/")
+        let userId;
+
+      
+
+ try {
+    // Use your createUser function from the controller
+    const response = await userLogin({  email, password });
+
+    if (!response.success) {
+      // Return specific error messages from backend
+      return {
+        errors: {
+          email: [response.message],
+        },
+      };
+    }
+
+   if (!response.data || !response.data.user || !response.data.user.id) {
+      console.error("Unexpected response structure:", response);
+      return {
+        errors: {
+          username: ["Server returned unexpected data. Please try again."],
+        },
+      };
+    }
+
+    // Get the user ID from the response
+     userId = String(response.data.user.id);
+    console.log(userId)
+   
+  } catch (error) {
+    console.error("Error creating account:", error);
+    return {
+      errors: {
+        username: ["Failed to create account. Please try again."],
+      },
+    };
   }
+
+
+      await createSession(testUser.id);
+      redirect("/mybookings")
+  }
+
 
 
 export async function createAccount(prevState: any, formData: FormData) {
@@ -62,7 +97,7 @@ export async function createAccount(prevState: any, formData: FormData) {
   
   const { username, email, password } = result.data;
   console.log(result.data)
-    let userId;
+  let userId;
 
   try {
     // Use your createUser function from the controller
@@ -89,11 +124,7 @@ export async function createAccount(prevState: any, formData: FormData) {
     // Get the user ID from the response
      userId = String(response.data.user.id);
     console.log(userId)
-    // Create session for the new user
-    // await createSession(userId);
-    
-    // Redirect to dashboard after successful account creation and login
-    // redirect("/dashboard");
+   
   } catch (error) {
     console.error("Error creating account:", error);
     return {
@@ -104,12 +135,9 @@ export async function createAccount(prevState: any, formData: FormData) {
   }
 
 
-  // If we got here, account creation was successful
-  // Create session for the new user outside the try-catch
+  // Create session for the new user 
   await createSession(userId);
-  
-  // Redirect outside the try-catch
-  redirect("/dashboard");
+    redirect("/dashboard");
 }
 
 

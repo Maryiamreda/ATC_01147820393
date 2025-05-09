@@ -86,7 +86,7 @@ console.log(userData);
             message: "User created successfully",
             data: {
 
- user: {
+      user: {
           id: newUser[0].id,
           username: newUser[0].username,
           email: newUser[0].email
@@ -101,7 +101,7 @@ console.log(userData);
 
 
 
-async function userLogin(credentials: LoginCredentials , 
+export async function userLogin(credentials: LoginCredentials , 
   res?: NextApiResponse
 ) {
   try{
@@ -141,7 +141,9 @@ async function userLogin(credentials: LoginCredentials ,
         success: true, 
         message: "Login successful",
         data: {
-          userId: user.id,
+          user: {id: user.id,
+                    email: user.email}
+,
           token
         }, 
     };

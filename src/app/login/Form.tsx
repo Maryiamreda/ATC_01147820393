@@ -1,15 +1,27 @@
 "use client";
 
-import React, { useActionState } from 'react';
-import { createAccount } from './action';
+import React, { useActionState, useState } from 'react';
+import { createAccount, login } from './action';
 import { useFormStatus } from 'react-dom';
 
 const CreateAccountForm = () => {
-  const [state, createAccountAction] = useActionState(createAccount, undefined);
-  
+  const [userState, setUserState] = useState('Sign Up')
+    const { pending } = useFormStatus();
+
+  const actionFn = userState === 'Sign Up' ? createAccount : login;
+  const [state, createAccountAction] = useActionState(actionFn, undefined);
+
+
+  const toggleState = async () => {
+        setUserState(userState === 'Sign Up' ? 'Log In' : 'Sign Up');
+
+    };
+
+
   return (
     <form action={createAccountAction} className="space-y-4">
-      <div className="flex flex-col gap-2">
+     {userState=='Sign Up' && 
+     <div className="flex flex-col gap-2">
         <label htmlFor="username" className="text-sm font-medium">Username</label>
         <input 
           id="username" 
@@ -18,9 +30,8 @@ const CreateAccountForm = () => {
           className="rounded-md border border-gray-300 px-3 py-2"
         />
       </div>
-      {state?.errors?.username && (
-        <p className="text-red-500">{state.errors.username}</p>
-      )}
+     } 
+
 
       <div className="flex flex-col gap-2">
         <label htmlFor="email" className="text-sm font-medium">Email</label>
@@ -31,10 +42,7 @@ const CreateAccountForm = () => {
           className="rounded-md border border-gray-300 px-3 py-2"
         />
       </div>
-      {state?.errors?.email && (
-        <p className="text-red-500">{state.errors.email}</p>
-      )}
-
+     
       <div className="flex flex-col gap-2">
         <label htmlFor="password" className="text-sm font-medium">Password</label>
         <input
@@ -45,33 +53,23 @@ const CreateAccountForm = () => {
           className="rounded-md border border-gray-300 px-3 py-2"
         />
       </div>
-      {state?.errors?.password && (
-        <p className="text-red-500">{state.errors.password}</p>
-      )}
-
+     
        
-      <SubmitButton />
-      
-      <div className="text-center mt-4">
-        <p className="text-sm text-gray-600">
-          Already have an account? <a href="/login" className="text-blue-600 hover:underline">Login here</a>
-        </p>
-      </div>
-    </form>
-  );
-}
-
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-  return (
-    <button 
+ <button 
       disabled={pending} 
       type='submit' 
       className=''
     >
-      {pending ? 'Creating Account...' : 'Create Account'}
-    </button>
+      {pending ? (userState === 'Sign Up' ? 'Creating Account...' : 'Logging In...') : (userState === 'Sign Up' ? 'Create Account' : 'Login')}
+    </button>      
+       {userState === 'Sign Up' ? <p >Already have an account? <span className="cursor-pointer  text-primary underline" onClick={toggleState} >Log In</span></p> :
+                    <p>Don't have an account?<span className="cursor-pointer text-primary underline" onClick={toggleState} >Sign Up</span> </p>}
+
+    </form>
   );
 }
+
+
+
 
 export default CreateAccountForm;
