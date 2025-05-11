@@ -34,19 +34,19 @@ const Navbar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         </div>
        
 
-   <div className='flex justify-center items-center gap-2'>
-  <div onClick={toggleTheme} className='cursor-pointer w-5 h-5 '>
+  <div className='flex justify-center items-center gap-4'>
+      <div onClick={toggleTheme} className='cursor-pointer w-5 h-5 '>
           {theme == 'dark' ? (<img src='/icons/icon-sun.svg' />) : (<img src='/icons/icon-moon.svg' className='filter brightness-60' />)}
 
-  </div>            
-     <div className="cursor-pointer">
+     </div>            
+     <div className="cursor-pointer text-xs">
        {!isLoggedIn ? (
-          <Link href="/login" className="bg-emerald-800 text-white  py-2 my-2 rounded-md">
+          <Link href="/login" className="bg-emerald-800 text-white  p-2 my-2 rounded-md">
             Create account
           </Link>
         ) : (
           <form action={logout}>
-            <button type="submit" className="">
+            <button type="submit" className="bg-red-500  text-white  p-2 my-2 rounded-md">
               Logout
             </button>
           </form>
