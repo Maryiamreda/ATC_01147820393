@@ -16,11 +16,12 @@ const CreateAccountForm = () => {
         setUserState(userState === 'Sign Up' ? 'Log In' : 'Sign Up');
 
     };
-
+// text-[#d4d4d4]
 
   return (
     <form action={createAccountAction} className="min-h-[80vh] flex items-center ">
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
+      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl
+       text-sm shadow-lg">
      <p className="text-2xl font-semibold">{userState === 'Sign Up' ? "Craete Account" : "Login"}</p>
                 <p>Please {userState === 'Sign Up' ? "Sign Up" : "Log in"} to book events</p>
          {userState=='Sign Up' && 

@@ -1,6 +1,15 @@
 @import "tailwindcss";
 
 /* :root {
+  --transition-duration: 0.5s;
+}
+
+body {
+  transition: background-color var(--transition-duration) ease, color var(--transition-duration) ease;
+  min-height: 100vh;
+} */
+
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
 }

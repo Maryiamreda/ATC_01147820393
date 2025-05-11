@@ -1,7 +1,16 @@
-import React from 'react';
+"use client";
+
+import React, { useContext } from 'react';
 import Link from 'next/link';
+import { ThemeContext } from '@/context/ThemeProvider';
 
 const Navbar = () => {
+     const themeContext = useContext(ThemeContext);
+  // Handle the case where ThemeContext is undefined
+  if (!themeContext) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  const { theme, toggleTheme } = themeContext;
   return (
     <div className='flex items-center justify-between border-b pb-4 border-b-gray-400'>
       
@@ -44,8 +53,10 @@ const Navbar = () => {
         } */}
 
 <div className='inline-flex gap-3'>
-    <h1>icon</h1>
-             <Link href='login' className='bg-primary   text-sm py-3 px-8 rounded-3xl'>Create account</Link>
+  <div onClick={toggleTheme} className='cursor-pointer w-5 h-5 flex justify-center items-center'>
+          {theme == 'dark' ? (<img src='/icons/icon-sun.svg' />) : (<img src='/icons/icon-moon.svg' />)}
+
+        </div>             <Link href='login' className='bg-primary   text-sm py-3 px-8 rounded-3xl'>Create account</Link>
 
 </div>
 
