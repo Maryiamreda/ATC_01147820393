@@ -1,9 +1,9 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { decrypt } from "../src/app/lib/session";
+import { decrypt } from "../lib/session";
 
 // Update protected and public routes
-const protectedRoutes = ["/dashboard", "/my-bookings"];
+const protectedRoutes = ["/mybookings", "/my-bookings"];
 const publicRoutes = ["/login", "/", "/register", "/create-account"];
 
 export default async function middleware(req: NextRequest) {
@@ -20,7 +20,7 @@ export default async function middleware(req: NextRequest) {
   }
 
   if (isPublicRoute && session?.userId) {
-    return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
+    return NextResponse.redirect(new URL("/mybookings", req.nextUrl));
   }
   
   return NextResponse.next();

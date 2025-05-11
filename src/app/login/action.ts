@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { createSession, deleteSession } from "../lib/session";
+import { createSession, deleteSession } from "../../../lib/session";
 import { createUser, userLogin } from '../../../backend/controllers/userControllers'
 
 const testUser = {
@@ -137,7 +137,7 @@ export async function createAccount(prevState: any, formData: FormData) {
 
   // Create session for the new user 
   await createSession(userId);
-    redirect("/dashboard");
+    redirect("/mybookings");
 }
 
 

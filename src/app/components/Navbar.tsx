@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useActionState, useContext } from 'react';
 import Link from 'next/link';
 import { ThemeContext } from '@/context/ThemeProvider';
@@ -46,7 +45,7 @@ const Navbar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           </Link>
         ) : (
           <form action={logout}>
-            <button type="submit" className="bg-red-500  text-white  p-2 my-2 rounded-md">
+            <button type="submit" className="bg-red-500 cursor-pointer  text-white  p-2 my-2 rounded-md">
               Logout
             </button>
           </form>

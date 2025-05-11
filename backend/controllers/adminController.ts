@@ -37,7 +37,7 @@ const logInAdmin = async (credentials: LoginCredentials) => {
         };        }
     }
     catch (err) {
-       console.error("Error fetching user receipts:", err);
+       console.error("Error Logging in Admin", err);
     throw err;
     }
 }
