@@ -69,7 +69,6 @@ const loginSchema = z.object({
 
     // Get the user ID from the response
      userId = String(response.data.user.id);
-    console.log(userId)
    
   } catch (error) {
     console.error("Error creating account:", error);
