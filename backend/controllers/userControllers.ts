@@ -94,7 +94,7 @@ console.log(userData);
             }
         }
     }catch(err){
-        console.error("Error fetching user receipts:", err);
+        console.error("Error creating account", err);
         throw err;
     }
     }
@@ -150,7 +150,7 @@ export async function userLogin(credentials: LoginCredentials ,
    
 }
 catch(err){
-    console.error("Error fetching user receipts:", err);
+    console.error("Error logging in", err);
     throw err;
 }
     }

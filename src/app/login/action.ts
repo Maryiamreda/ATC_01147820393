@@ -33,6 +33,7 @@ const loginSchema = z.object({
 
   export async function login(prevState: any, formData: FormData) {
     const result=loginSchema.safeParse(Object.fromEntries(formData)); //converts formData into a regular object and checks if data matches the schema
+    console.log(result);
     if (!result.success) {
         return {
           errors: result.error.flatten().fieldErrors,

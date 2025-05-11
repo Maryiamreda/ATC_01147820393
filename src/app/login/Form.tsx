@@ -19,38 +19,41 @@ const CreateAccountForm = () => {
 
 
   return (
-    <form action={createAccountAction} className="space-y-4">
-     {userState=='Sign Up' && 
-     <div className="flex flex-col gap-2">
-        <label htmlFor="username" className="text-sm font-medium">Username</label>
+    <form action={createAccountAction} className="min-h-[80vh] flex items-center ">
+      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
+     <p className="text-2xl font-semibold">{userState === 'Sign Up' ? "Craete Account" : "Login"}</p>
+                <p>Please {userState === 'Sign Up' ? "Sign Up" : "Log in"} to book events</p>
+         {userState=='Sign Up' && 
+     <div  className="w-full">
+                    <p className="text-start">Full Name</p>
         <input 
           id="username" 
           name="username" 
           placeholder="Username" 
-          className="rounded-md border border-gray-300 px-3 py-2"
-        />
+className="mt-1 border  w-full rounded p-2" 
+    />
       </div>
      } 
 
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="email" className="text-sm font-medium">Email</label>
+      <div className="w-full">
+                    <p className="text-start">Email</p>
         <input 
           id="email" 
           name="email" 
           placeholder="Email" 
-          className="rounded-md border border-gray-300 px-3 py-2"
+className="mt-1 border  w-full rounded p-2" 
         />
       </div>
      
-      <div className="flex flex-col gap-2">
-        <label htmlFor="password" className="text-sm font-medium">Password</label>
+      <div className="w-full">
+        <p className="text-start">password</p>
         <input
           id="password"
           name="password"
           type="password"
           placeholder="Password"
-          className="rounded-md border border-gray-300 px-3 py-2"
+className="mt-1 border  w-full rounded p-2" 
         />
       </div>
      
@@ -58,13 +61,14 @@ const CreateAccountForm = () => {
  <button 
       disabled={pending} 
       type='submit' 
-      className=''
-    >
+className="bg-emerald-800 text-white w-full py-2 my-2 rounded-md text-base cursor-pointer  "    >
       {pending ? (userState === 'Sign Up' ? 'Creating Account...' : 'Logging In...') : (userState === 'Sign Up' ? 'Create Account' : 'Login')}
     </button>      
-       {userState === 'Sign Up' ? <p >Already have an account? <span className="cursor-pointer  text-primary underline" onClick={toggleState} >Log In</span></p> :
-                    <p>Don't have an account?<span className="cursor-pointer text-primary underline" onClick={toggleState} >Sign Up</span> </p>}
+       {userState === 'Sign Up' ? <p >Already have an account? <span className="cursor-pointer  text-indigo-700 underline" onClick={toggleState} >Log In</span></p> :
+                    <p>Don't have an account?<span className="cursor-pointer text-indigo-700 underline" onClick={toggleState} >Sign Up</span> </p>}
 
+      </div>
+    
     </form>
   );
 }
