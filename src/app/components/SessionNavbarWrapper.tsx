@@ -1,7 +1,7 @@
-import Navbar from "./Navbar";
+// import Navbar from "./Navbar";
 
-const SessionNavbarWrapper = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
-  return <Navbar isLoggedIn={isLoggedIn} />;
-};
+// const SessionNavbarWrapper = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+//   return <Navbar isLoggedIn={isLoggedIn} />;
+// };
 
-export default SessionNavbarWrapper;
+// export default SessionNavbarWrapper;

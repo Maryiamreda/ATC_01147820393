@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import SessionNavbarWrapper from "./components/Navbar";
 import { getUserFromSession } from '../../lib/auth'
 import { ThemeProvider } from "@/context/ThemeProvider";
+import Navbar from "./components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,13 +26,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const user = await getUserFromSession();
-  const isLoggedIn = !!user;
+const user = await getUserFromSession();
+const isLoggedIn = !!user?.userId;
+console.log("User:", user?.userId);
+console.log("Is logged in:", isLoggedIn);
   return (
     <html lang="en">
 <ThemeProvider> 
      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <SessionNavbarWrapper  isLoggedIn={isLoggedIn}/>
+        <Navbar  isLoggedIn={isLoggedIn}/>
         {children}
       </body>
   </ThemeProvider>  
