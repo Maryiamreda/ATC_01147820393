@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { date, integer, pgEnum, pgTable, primaryKey, timestamp, varchar } from "drizzle-orm/pg-core";
+import { date, integer, pgEnum, pgTable, primaryKey, timestamp, unique, varchar } from "drizzle-orm/pg-core";
 
 export const eventTypeEnum = pgEnum("event-type", ["in person", "online"]);
 export const eventCategoryEnum = pgEnum("event-category", [
@@ -34,7 +34,7 @@ export const usersTable = pgTable("users", {
 });
 
 export const usersRelations = relations(usersTable, ({ many }) => ({
-  events: many(eventsTable),
+  eventBookings: many(bookingsTable),
 
 }));
 
@@ -56,7 +56,7 @@ export const eventsTable = pgTable("events", {
 });
 
 export const eventsRelations = relations(eventsTable, ({one , many }) => ({
-  attendees: many(usersTable),
+bookings: many(bookingsTable),
 type:one(eventTypeTable ,{
   fields: [eventsTable.eventTypeId],
   references: [eventTypeTable.id],
@@ -107,3 +107,26 @@ export const eventCategoryRelations = relations(eventCategoryTable, ({ many }) =
   events: many(eventsTable),
 }));
 
+export const bookingsTable = pgTable("event_bookings", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: integer().references(() => usersTable.id).notNull(),
+  eventId: integer().references(() => eventsTable.id).notNull(),
+  quantity: integer().notNull().default(1), 
+  ...timestamps
+}, 
+//this is used to prevent the same user from creating multiple booking records for the same event
+(table) => ({
+  uniqueUserEvent: unique().on(table.userId, table.eventId)
+}));
+
+
+export const eventBookingsRelations = relations(bookingsTable, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [bookingsTable.userId],
+    references: [usersTable.id],
+  }),
+  event: one(eventsTable, {
+    fields: [bookingsTable.eventId],
+    references: [eventsTable.id],
+  }),
+}));
