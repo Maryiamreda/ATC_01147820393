@@ -40,7 +40,7 @@ const Navbar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
      </div>            
      <div className="cursor-pointer text-xs">
        {!isLoggedIn ? (
-          <Link href="/login" className="bg-emerald-800 text-white  p-2 my-2 rounded-md">
+          <Link href="/user/login" className="bg-emerald-800 text-white  p-2 my-2 rounded-md">
             Create account
           </Link>
         ) : (

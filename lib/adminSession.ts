@@ -20,7 +20,7 @@ export async function encrypt(payload: AdminSessionPayload) {
     .sign(encodedAdminKey);
 }
 
-export async function createAdminSession(     adminId: string, email: string) {
+export async function createAdminSession(  adminId: string, email: string) {
   const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000); 
     const session = await encrypt({ 
     adminId, 
