@@ -6,6 +6,10 @@ import { cookies } from "next/headers";
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey); //encoding the secret key from  .env into a format that the JWT library can use for encryption
 
+type SessionPayload = {
+    userId: string;
+    expiresAt: Date;
+};
 
 
   export async function encrypt(payload: SessionPayload) {
@@ -37,10 +41,6 @@ export async function deleteSession() {
   cookies().delete("session");
 }
 
-type SessionPayload = {
-    userId: string;
-    expiresAt: Date;
-  };
 
 
   export async function decrypt(session: string | undefined = "") {
