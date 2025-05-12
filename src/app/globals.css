@@ -8,7 +8,10 @@ body {
   transition: background-color var(--transition-duration) ease, color var(--transition-duration) ease;
   min-height: 100vh;
 }
+.admin-login{
+    transition: background-color var(--transition-duration) ease, color var(--transition-duration) ease;
 
+}
 /* :root {
   --background: #ffffff;
   --foreground: #171717;

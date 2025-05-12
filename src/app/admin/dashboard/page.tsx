@@ -1,79 +1,153 @@
 // app/admin/dashboard/page.tsx
+"use client";
 
-import { checkAdminAuth } from "../../../../lib/checkAdminAuth";
-import { adminLogout } from "../login/action";
+import { ThemeContext } from "@/context/ThemeProvider";
+import { useContext } from "react";
 
-export default async function AdminDashboard() {
+
+export default  function AdminDashboard() {
+      const { elementColor, theme } = useContext(ThemeContext);
+
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <span className="text-xl font-bold">Admin Panel</span>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <span className="mr-4">Logged in as: </span>
-              <form action={adminLogout}>
-                <button 
-                  type="submit"
-                  className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
-                >
-                  Logout
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </nav>
-      
-      <div className="py-10">
-        <header>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold leading-tight text-gray-900">
-              Dashboard
-            </h1>
-          </div>
-        </header>
-        <main>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg p-6">
-              <h2 className="text-xl font-semibold mb-4">Welcome to Admin Dashboard</h2>
-              <p>
-                This is your admin control panel. From here, you can manage events, users, and other aspects of your application.
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                <div className="bg-blue-50 p-4 rounded-lg shadow">
-                  <h3 className="font-semibold text-lg">Events</h3>
-                  <p className="text-gray-600">Manage all events in the system</p>
-                  <a href="/admin/events" className="text-blue-600 hover:text-blue-800 mt-2 inline-block">
-                    View Events →
-                  </a>
+
+
+
+    <form  className='m-5 w-full text-start  flex flex-col items-center justify-center  '>
+            <h2 className='  text-5xl font-bold mb-4'>Add Event</h2>
+            <div className='admin-login px-8 py-8 border rounded w-full max-w-4xl   text-start' 
+            style={{backgroundColor: elementColor , color: theme === "light" ? "hsl(235, 19%, 35%)" : "white", borderColor: theme === "light" ? "hsl(233, 11%, 84%)" : "hsl(234deg 39% 85% / 33%)",
+                }}
+            >
+                <div className='flex items-center gap-4 mb-8 text-gray-500 '>
+                    <label htmlFor="doc-img">
+<img src="/icons/upload_area.svg" className="w-16 cursor-pointer bg-gray-100 rounded-full" />
+                    </label>
+                    <input type='file' id='doc-img' hidden  />
+                    <p>Upload Event <br /> Image </p>
                 </div>
-                
-                <div className="bg-green-50 p-4 rounded-lg shadow">
-                  <h3 className="font-semibold text-lg">Users</h3>
-                  <p className="text-gray-600">Manage user accounts and permissions</p>
-                  <a href="/admin/users" className="text-blue-600 hover:text-blue-800 mt-2 inline-block">
-                    View Users →
-                  </a>
+                <div className='flex flex-col lg:flex-row items-start gap-10 text-gray-600'>
+                    <div className='w-full lg:flex-1 flex flex-col gap-4'>
+                        <div className='flex-1 flex flex-col gap-1'>
+                            <label>Event name</label>
+                            <input
+                                type='text'
+                                className='border rounded px-3 py-2'
+                                placeholder="Enter Event name"
+                            />
+                        </div>
+                        <div className='flex-1 flex flex-col gap-1'>
+                            <label>Organizer Email </label>
+                            <input
+                                type='email'
+                                className='border rounded px-3 py-2'
+                                placeholder="Enter Organizer's email"
+                               
+                            />
+                        </div>
+                        <div className='flex-1 flex flex-col gap-1'>
+                            <label>Total Audience Limit</label>
+                            <input
+                                type='text'
+                                className='border rounded px-3 py-2'
+                                placeholder="Enter Audience Limit"
+                               
+                            />
+                        </div>
+                        <div className='flex-1 flex flex-col gap-1'>
+                            <label>Category</label>
+                            <select
+                                className='border rounded px-3 py-2'
+                              
+                            >
+                                <option value="" disabled>Select category of the event</option>
+                                <option value="1 Year">1 Year</option>
+                                <option value="2 Year">2 Year</option>
+                                <option value="3 Year">3 Year</option>
+                                <option value="4 Year">4 Year</option>
+                                <option value="5 Year">5 Year</option>
+                                <option value="6 Year">6 Year</option>
+                                <option value="7 Year">7 Year</option>
+                                <option value="8 Year">8 Year</option>
+                                <option value="9 Year">9 Year</option>
+                                <option value="10 Year">10 Year</option>
+                            </select>
+                        </div>
+                        <div className='flex-1 flex flex-col gap-1'>
+                            <label>Fees</label>
+                            <input
+                                type='text'
+                                className='border rounded px-3 py-2'
+                                placeholder="Enter Event fees"
+                               
+                            />
+                        </div>
+                    </div>
+                    <div className='w-full lg:flex-1 flex flex-col gap-4'>
+                        <div className='flex-1 flex flex-col gap-1'>
+                            <label>Event Type</label>
+                            <select
+                                className='border rounded px-3 py-2'
+                              
+                            >
+                                <option value="" disabled>Select Event Type</option>
+                                <option value=""> in person </option>
+                                <option value="">online</option>
+                                
+                            </select>
+                        </div>
+                        
+
+                        <div className='flex-1 flex flex-col gap-1'>
+                            <label>Event Date</label>
+                            <input
+                                type='text'
+                                className='border rounded px-3 py-2'
+                                placeholder="Time of the Event"
+                               
+                            />
+                           
+                        </div>
+
+
+                        <div className='flex-1 flex flex-col gap-1'>
+                            <label>Event location</label>
+                            <input
+                                type='text'
+                                className='border rounded px-3 py-2'
+                                placeholder="Address of the event /or online platfom if online "
+                               
+                            />
+                           
+                        </div>
+
+                        <div className='flex-1 flex flex-col gap-1'>
+                            <label>Registration Deadline</label>
+                            <input
+                                type='text'
+                                className='border rounded px-3 py-2'
+                                placeholder="Enter Registration Deadline"
+                             
+                            />
+                        </div>
+                       
+                    </div>
                 </div>
-                
-                <div className="bg-purple-50 p-4 rounded-lg shadow">
-                  <h3 className="font-semibold text-lg">Reports</h3>
-                  <p className="text-gray-600">View system reports and analytics</p>
-                  <a href="/admin/reports" className="text-blue-600 hover:text-blue-800 mt-2 inline-block">
-                    View Reports →
-                  </a>
+                <div className='flex-1 flex flex-col gap-1 text-gray-600'>
+                    <label className='mt-4 mb-2'>Event Description</label>
+                    <textarea
+                        placeholder="Write a brief description about your event"
+                        className='w-full px-4 pt-2 border rounded'
+                       
+                    />
                 </div>
-              </div>
+                <button className=' bg-emerald-800 px-10 py-3 mt-4 text-white rounded-full'>Add Doctor</button>
             </div>
-          </div>
-        </main>
-      </div>
-    </div>
+        </form>
   );
 }
+
+
+
+
+  
+  
