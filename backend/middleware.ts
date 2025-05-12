@@ -62,7 +62,7 @@ async function handleAdminRoutes(req: NextRequest, path: string) {
   return NextResponse.next();
 }
 
-
+// specifies which routes the middleware should run on.
 export const config = {
   matcher: [
     // Match all user routes

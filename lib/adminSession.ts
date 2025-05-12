@@ -5,6 +5,8 @@ const adminSecretKey = process.env.ADMIN_SECRET;
 const encodedAdminKey = new TextEncoder().encode(adminSecretKey);
 
 type AdminSessionPayload = {
+    adminId: string;
+
   email: string;
   role: 'admin';
   expiresAt: Date;
@@ -18,9 +20,10 @@ export async function encrypt(payload: AdminSessionPayload) {
     .sign(encodedAdminKey);
 }
 
-export async function createAdminSession(email: string) {
+export async function createAdminSession(     adminId: string, email: string) {
   const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000); 
     const session = await encrypt({ 
+    adminId, 
     email, 
     role: 'admin', 
     expiresAt  }); //jwt token

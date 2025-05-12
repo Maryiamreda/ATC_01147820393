@@ -2,7 +2,7 @@
 import React, { useActionState, useContext } from 'react';
 import Link from 'next/link';
 import { ThemeContext } from '@/context/ThemeProvider';
-import {logout} from '../login/action'
+import {logout} from '../user/login/action'
 const Navbar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
      const themeContext = useContext(ThemeContext);
      

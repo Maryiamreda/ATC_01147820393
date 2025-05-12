@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { createSession, deleteSession } from "../../../lib/session";
-import { createUser, userLogin } from '../../../backend/controllers/userControllers'
+import { createSession, deleteSession } from "../../../../lib/session";
+import { createUser, userLogin } from '../../../../backend/controllers/userControllers'
 
 const testUser = {
     id: "1",
@@ -81,7 +81,7 @@ const loginSchema = z.object({
 
 
       await createSession(testUser.id);
-      redirect("/mybookings")
+      redirect("/user/mybookings")
   }
 
 
@@ -137,13 +137,13 @@ export async function createAccount(prevState: any, formData: FormData) {
 
   // Create session for the new user 
   await createSession(userId);
-    redirect("/mybookings");
+    redirect("/user/mybookings");
 }
 
 
 
   export async function logout() {
     await deleteSession();
-  redirect("/login");
+  redirect("/user/login");
   }
 
