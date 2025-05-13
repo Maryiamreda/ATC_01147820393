@@ -21,7 +21,7 @@ const Navbar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                     <li className='py-1 text-sm '>HOME</li>
                     <hr className='bg-primary  border-none  outline-none h-0.5 m-auto w-3/5 hidden' />
                 </Link>
-                <Link href="/mybookings">
+                <Link href="/user/mybookings">
                     <li className='py-1 text-sm'>MY BOOKINGS</li>
                     <hr className='bg-primary  border-none  outline-none h-0.5 m-auto w-3/5 hidden' />
                 </Link>

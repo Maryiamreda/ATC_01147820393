@@ -18,19 +18,7 @@ type LoginCredentials = {
     password: string;
   };
  
-type AuthResponse = {
-  success: boolean;
-  message: string;
-  data?: {
-    user?: {
-      id: string | number;
-      username: string;
-      email: string;
-    };
-    userId?: string | number;
-    token?: string;
-  };
-};
+
 
 
 export async function getallUsers() {

@@ -1,0 +1,115 @@
+"use server";
+
+import { z } from "zod";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { addEventToDatabase } from "../../../../backend/controllers/eventsController";
+
+// Define event input validation schema
+const eventSchema = z.object({
+  name: z.string().min(1, { message: "Event name is required" }),
+  organizerEmail: z.string().email({ message: "Valid organizer email is required" }),
+  totalAudienceLimit: z.coerce.number().positive({ message: "Audience limit must be a positive number" }),
+  category: z.string().min(1, { message: "Category is required" }),
+  fees: z.coerce.number().nonnegative({ message: "Fees must be a non-negative number" }),
+  eventType: z.string().min(1, { message: "Event type is required" }),
+  date: z.string().min(1, { message: "Event date is required" }),
+  location: z.string().optional(),
+  registrationDeadline: z.string().optional(),
+  description: z.string().min(1, { message: "Description is required" }),
+});
+
+export type EventState = {
+  errors?: {
+    name?: string[];
+    organizerEmail?: string[];
+    totalAudienceLimit?: string[];
+    category?: string[];
+    fees?: string[];
+    eventType?: string[];
+    date?: string[];
+    location?: string[];
+    registrationDeadline?: string[];
+    description?: string[];
+    image?: string[];
+    _form?: string[];
+  };
+  message?: string;
+  success?: boolean;
+};
+
+const initialState: EventState = {
+  errors: {},
+  success: false
+};
+
+export async function addEvent(prevState: EventState, formData: FormData): Promise<EventState> {
+  try {
+    // Extract image file
+    const image = formData.get('image') as File;
+    
+    // Validate file exists
+    if (!image || image.size === 0) {
+      return {
+        errors: {
+          image: ["Event image is required"],
+        },
+        success: false
+      };
+    }
+
+    // Parse and validate form data
+    const validationResult = eventSchema.safeParse({
+      name: formData.get('name'),
+      organizerEmail: formData.get('organizerEmail'),
+      totalAudienceLimit: formData.get('totalAudienceLimit'),
+      category: formData.get('category'),
+      fees: formData.get('fees'),
+      eventType: formData.get('eventType'),
+      date: formData.get('date'),
+      location: formData.get('location'),
+      registrationDeadline: formData.get('registrationDeadline'),
+      description: formData.get('description'),
+    });
+
+    if (!validationResult.success) {
+      return {
+        errors: validationResult.error.flatten().fieldErrors,
+        success: false
+      };
+    }
+
+    const data = validationResult.data;
+
+    // Call the event controller to handle the database operations
+    const result = await addEventToDatabase({
+      ...data,
+      image
+    });
+
+    if (!result.success) {
+      return {
+        errors: {
+          _form: [result.message || "Failed to add event"],
+        },
+        success: false
+      };
+    }
+
+    // Refresh the events list
+    revalidatePath('/');
+    
+    return {
+      success: true,
+      message: "Event added successfully!",
+    };
+  } catch (err: any) {
+    console.error("Error Adding Event", err);
+    return {
+      errors: {
+        _form: [`Error adding event: ${err.message}`],
+      },
+      success: false
+    };
+  }
+}
