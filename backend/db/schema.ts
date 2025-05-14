@@ -30,8 +30,6 @@ export const eventsTable = pgTable("events", {
   description:varchar().notNull(),
   date:date().notNull(),
   location:varchar(),
-  totalAudienceLimit:integer().notNull(),
-  registrationDeadline: timestamp(),
   eventType: varchar().notNull(),
   eventCategory: varchar().notNull(),
   organizerEmail: varchar({ length: 255 }).notNull(),

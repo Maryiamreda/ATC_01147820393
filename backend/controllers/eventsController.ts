@@ -15,13 +15,11 @@ cloudinary.config({
 export type EventData = {
   name: string;
   organizerEmail: string;
-  totalAudienceLimit: number;
   category: string;
   fees: number;
   eventType: string;
   date: string;
   location?: string;
-  registrationDeadline?: string;
   description: string;
   image: File;
 };
@@ -42,8 +40,7 @@ try{
 export async function addEvent(data: EventData) {
   try {
     // Validate required fields
-    if (!data.name || !data.organizerEmail || !data.totalAudienceLimit || !data.category || 
-        !data.fees || !data.eventType || !data.date || !data.description || !data.image) {
+    if (!data.name || !data.organizerEmail ||  !data.category ||  !data.fees || !data.eventType || !data.date || !data.description || !data.image) {
       return {
         success: false,
         message: "All fields are required",
@@ -70,8 +67,6 @@ export async function addEvent(data: EventData) {
   description: data.description,
   date: new Date(data.date).toISOString(),
   location: data.location || "",
-  totalAudienceLimit: data.totalAudienceLimit,
-  registrationDeadline: data.registrationDeadline ? new Date(data.registrationDeadline) : null,
   eventType: data.eventType ,
   eventCategory: data.category ,
   organizerEmail: data.organizerEmail,
@@ -103,6 +98,66 @@ export async function getEvents(){
         throw err;
     }
  }
+export async function editEvent(eventId: number, field: string, value: any){
+  try{
+ const event = await db.select()
+      .from(schema.eventsTable)
+      .where(eq(schema.eventsTable.id, eventId))
+      .limit(1);
+
+    if (!event || event.length === 0) {
+      return {
+        success: false,
+        message: "Event not found",
+      };
+    }
+    let updateData: any = {};
+switch(field) {
+      case 'name':
+      case 'organizerEmail':
+      case 'description':
+      case 'eventType':
+      case 'location':
+        updateData[field] = value;
+        break;
+      case 'category':
+        updateData.eventCategory = value;
+        break;  
+      case 'fees':
+        // Ensure fees is a number
+        updateData.fees = Number(value);
+        break;
+      case 'date':
+        updateData.date = new Date(value).toISOString();
+        break;
+        default:
+        return {
+          success: false,
+          message: `Invalid field name: ${field}`,
+        };
+
+}
+ updateData.updated_at = new Date().toISOString();
+ const updatedEvent = await db.update(schema.eventsTable)
+      .set(updateData)
+      .where(eq(schema.eventsTable.id, eventId))
+      .returning();
+
+return {
+      success: true,
+      message: `Event ${field} updated successfully`,
+      event: updatedEvent[0]
+    };
+
+
+  }catch(err:any){
+    console.error("Error Adding Event", err);
+    return {
+      success: false,
+      message: `Error adding event: ${err.message}`,
+    };
+  }
+}
 
 
 

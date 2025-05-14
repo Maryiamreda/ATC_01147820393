@@ -9,13 +9,11 @@ import ROUTES from "../../../../lib/routes";
 const eventSchema = z.object({
   name: z.string().min(1, { message: "Event name is required" }),
   organizerEmail: z.string().email({ message: "Valid organizer email is required" }),
-  totalAudienceLimit: z.coerce.number().positive({ message: "Audience limit must be a positive number" }),
   category: z.string().min(1, { message: "Category is required" }),
   fees: z.coerce.number().nonnegative({ message: "Fees must be a non-negative number" }),
   eventType: z.string().min(1, { message: "Event type is required" }),
   date: z.string().min(1, { message: "Event date is required" }),
   location: z.string().optional(),
-  registrationDeadline: z.string().optional(),
   description: z.string().min(1, { message: "Description is required" }),
 });
 
@@ -23,13 +21,11 @@ export type EventState = {
   errors?: {
     name?: string[];
     organizerEmail?: string[];
-    totalAudienceLimit?: string[];
     category?: string[];
     fees?: string[];
     eventType?: string[];
     date?: string[];
     location?: string[];
-    registrationDeadline?: string[];
     description?: string[];
     image?: string[];
     _form?: string[];
@@ -59,13 +55,11 @@ console.log(formData);
     const validationResult = eventSchema.safeParse({
       name: formData.get('name'),
       organizerEmail: formData.get('organizerEmail'),
-      totalAudienceLimit: formData.get('totalAudienceLimit'),
       category: formData.get('category'),
       fees: formData.get('fees'),
       eventType: formData.get('eventType'),
       date: formData.get('date'),
       location: formData.get('location'),
-      registrationDeadline: formData.get('registrationDeadline'),
       description: formData.get('description'),
     });
 

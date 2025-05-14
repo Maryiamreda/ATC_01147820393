@@ -57,17 +57,17 @@ export default  function AdminDashboard() {
                                
                             />
                         </div>
-                        <div className='flex-1 flex flex-col gap-1'>
+                        {/* <div className='flex-1 flex flex-col gap-1'>
                             <label>Total Audience Limit</label>
                             <input
                                 type='text'
                                  id="totalAudienceLimit"
-                  name="totalAudienceLimit"
+                     name="totalAudienceLimit"
                                 className='border rounded px-3 py-2'
                                 placeholder="Enter Audience Limit"
                                
                             />
-                        </div>
+                        </div> */}
                         <div className='flex-1 flex flex-col gap-1'>
                             <label>Category</label>
                             <select
@@ -146,7 +146,7 @@ export default  function AdminDashboard() {
                            
                         </div>
 
-                        <div className='flex-1 flex flex-col gap-1'>
+                        {/* <div className='flex-1 flex flex-col gap-1'>
                             <label>Registration Deadline</label>
                             <input
                                 type='date'
@@ -156,7 +156,7 @@ export default  function AdminDashboard() {
                                 placeholder="Enter Registration Deadline"
                              
                             />
-                        </div>
+                        </div> */}
                        
                     </div>
                 </div>
