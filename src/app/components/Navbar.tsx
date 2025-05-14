@@ -1,5 +1,7 @@
 "use client";
 import React, { useActionState, useContext } from 'react';
+import ROUTES from '../../../lib/routes';
+
 import Link from 'next/link';
 import { ThemeContext } from '@/context/ThemeProvider';
 import {logout} from '../user/login/action'
@@ -17,15 +19,15 @@ const Navbar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   <h1 className='w-36 hover:cursor-pointer'>EVENTIFY </h1>   
     <div>
             <ul className='hidden md:inline-flex gap-5 font-medium'>
-                <Link href="/">
+                <Link href={ROUTES.HOME}>
                     <li className='py-1 text-sm '>HOME</li>
                     <hr className='bg-primary  border-none  outline-none h-0.5 m-auto w-3/5 hidden' />
                 </Link>
-                <Link href="/user/mybookings">
+                <Link href={ROUTES.USER.BOOKINGS}>
                     <li className='py-1 text-sm'>MY BOOKINGS</li>
                     <hr className='bg-primary  border-none  outline-none h-0.5 m-auto w-3/5 hidden' />
                 </Link>
-                <Link href="/admin/login"  target="_blank" >
+                <Link href={ROUTES.ADMIN.LOGIN}  target="_blank" >
                     <li className='py-1 text-sm'>ADMIN</li> 
                     <hr className='bg-primary  border-none  outline-none h-0.5 m-auto w-3/5 hidden' />
                 </Link>

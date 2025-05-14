@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSession, deleteSession } from "../../../../lib/session";
 import { createUser, userLogin } from '../../../../backend/controllers/userControllers'
+import ROUTES from "../../../../lib/routes";
 
 const testUser = {
     id: "1",
@@ -137,7 +138,7 @@ export async function createAccount(prevState: any, formData: FormData) {
 
   // Create session for the new user 
   await createSession(userId);
-    redirect("/user/mybookings");
+    redirect(ROUTES.USER.BOOKINGS);
 }
 
 

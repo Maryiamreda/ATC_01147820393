@@ -4,7 +4,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { addEventToDatabase } from "../../../../backend/controllers/eventsController";
-
+import ROUTES from "../../../../lib/routes";
 // Define event input validation schema
 const eventSchema = z.object({
   name: z.string().min(1, { message: "Event name is required" }),
@@ -92,7 +92,7 @@ console.log(formData);
         message: "Event added successfully!",
       };
     }
-    redirect("/admin/dashboard");
+    redirect(ROUTES.ADMIN.DASHBOARD);
     
  
   } catch (err: any) {
