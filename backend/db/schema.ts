@@ -1,23 +1,7 @@
 import { relations } from "drizzle-orm";
 import { date, integer, pgEnum, pgTable, primaryKey, timestamp, unique, varchar } from "drizzle-orm/pg-core";
 
-export const eventTypeEnum = pgEnum("event-type", ["in person", "online"]);
-export const eventCategoryEnum = pgEnum("event-category", [
-  "music", 
-  "educational",
-  "business", 
-  "technology", 
-  "health",
-  "arts",
-  "sports",
-  "entertainment",
-  "science",
-  "networking",
-  "charity",
-  "fashion",
-  "cultural",
 
-]);
 const timestamps = {
   updated_at: timestamp(),
   created_at: timestamp().defaultNow().notNull(),
@@ -48,23 +32,16 @@ export const eventsTable = pgTable("events", {
   location:varchar(),
   totalAudienceLimit:integer().notNull(),
   registrationDeadline: timestamp(),
-  eventTypeId: integer().references(() => eventTypeTable.id).notNull(),
-  categoryId: integer().references(() => eventCategoryTable.id).notNull(),
-  organizerEmail: varchar({ length: 255 }).notNull().unique(),
+  eventType: varchar().notNull(),
+  eventCategory: varchar().notNull(),
+  organizerEmail: varchar({ length: 255 }).notNull(),
   ...timestamps
 
 });
 
-export const eventsRelations = relations(eventsTable, ({one , many }) => ({
+export const eventsRelations = relations(eventsTable, ({ many }) => ({
 bookings: many(bookingsTable),
-type:one(eventTypeTable ,{
-  fields: [eventsTable.eventTypeId],
-  references: [eventTypeTable.id],
-}),
-category: one(eventCategoryTable, {
-  fields: [eventsTable.categoryId],
-  references: [eventCategoryTable.id],
-}),
+
 }));
 
 export const usersToEventsTable = pgTable("users_to_events",{
@@ -91,21 +68,6 @@ export const usersToEventsRelations  = relations(usersToEventsTable, ({ one }) =
   }),
 }));
 
-export const eventTypeTable=pgTable("event_type", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  type:eventTypeEnum().notNull()
-})
-export const eventTypeRelations = relations(eventTypeTable, ({many }) => ({
-  events: many(eventsTable),
-}));
-
-export const eventCategoryTable = pgTable("event_category", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: eventCategoryEnum().notNull()
-});
-export const eventCategoryRelations = relations(eventCategoryTable, ({ many }) => ({
-  events: many(eventsTable),
-}));
 
 export const bookingsTable = pgTable("event_bookings", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),

@@ -3,12 +3,14 @@ import * as schema from '../db/schema';
 import { eq } from 'drizzle-orm';
 import { v2 as cloudinary } from 'cloudinary';
 
+
+
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-export type EventType = 'in person' | 'online';
 
 export type EventData = {
   name: string;
@@ -48,50 +50,22 @@ export async function addEventToDatabase(data: EventData) {
     });
     const imageUrl = imageUpload.secure_url;
 
-    // Get eventType ID
-    const eventTypeResult = await db.select()
-      .from(schema.eventTypeTable)
-.where(eq(schema.eventTypeTable.type, data.eventType.trim().toLowerCase() as any))
-      .limit(1);
-    
-    if (eventTypeResult.length === 0) {
-      return {
-        success: false,
-        message: "Invalid event type selected",
-      };
-    }
-
-    const eventTypeId = eventTypeResult[0].id;
-
-    // Get category ID
-    const categoryResult = await db.select()
-      .from(schema.eventCategoryTable)
-      .where(eq(schema.eventCategoryTable.name, data.category as any))
-      .limit(1);
-
-    if (categoryResult.length === 0) {
-      return {
-        success: false,
-        message: "Invalid category selected",
-      };
-    }
-
-    const categoryId = categoryResult[0].id;
+   
 
     // Insert the event into the database
-    const newEvent = await db.insert(schema.eventsTable).values({
-      name: data.name,
-      image: imageUrl,
-      fees: data.fees,
-      description: data.description,
-      date: new Date(data.date).toISOString(),
-      location: data.location || "",
-      totalAudienceLimit: data.totalAudienceLimit,
-      registrationDeadline: data.registrationDeadline ? new Date(data.registrationDeadline) : null,
-      eventTypeId: eventTypeId,
-      categoryId: categoryId,
-      organizerEmail: data.organizerEmail,
-    }).returning();
+   const newEvent = await db.insert(schema.eventsTable).values({
+  name: data.name,
+  image: imageUrl,
+  fees: data.fees,
+  description: data.description,
+  date: new Date(data.date).toISOString(),
+  location: data.location || "",
+  totalAudienceLimit: data.totalAudienceLimit,
+  registrationDeadline: data.registrationDeadline ? new Date(data.registrationDeadline) : null,
+  eventType: data.eventType ,
+  eventCategory: data.category ,
+  organizerEmail: data.organizerEmail,
+}).returning();
 
     return {
       success: true,
@@ -107,10 +81,11 @@ export async function addEventToDatabase(data: EventData) {
 }
 
 
-async function getEvents(){
+export async function getEvents(){
     try{
         const events = await db.select()
         .from(schema.eventsTable);
+        console.log(events)
         return events;
     
     }catch(err){

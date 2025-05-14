@@ -1,12 +1,12 @@
 // app/users/page.tsx
-import { getallUsers } from '../../backend/controllers/userControllers';
+import { getEvents } from '../../backend/controllers/eventsController';
 
 export default async function UsersPage() {
-  const users = await getallUsers();
+  const users = await getEvents();
 
   return (
     <div className="p-6">
-      <h1 className="text-6xl font-bold mb-4">All Users</h1>
+      <h1 className="text-6xl font-bold mb-4">All Events</h1>
       <ul className="space-y-2">
         {users.map((user: any) => (
           <li key={user.id} className="p-4 bg-gray-100 rounded">

@@ -38,17 +38,13 @@ export type EventState = {
   success?: boolean;
 };
 
-const initialState: EventState = {
-  errors: {},
-  success: false
-};
+
 
 export async function addEvent(prevState: EventState, formData: FormData): Promise<EventState> {
   try {
-    // Extract image file
+    
     const image = formData.get('image') as File;
     
-    // Validate file exists
     if (!image || image.size === 0) {
       return {
         errors: {
@@ -57,6 +53,7 @@ export async function addEvent(prevState: EventState, formData: FormData): Promi
         success: false
       };
     }
+console.log(formData);
 
     // Parse and validate form data
     const validationResult = eventSchema.safeParse({
@@ -80,7 +77,6 @@ export async function addEvent(prevState: EventState, formData: FormData): Promi
     }
 
     const data = validationResult.data;
-
     // Call the event controller to handle the database operations
     const result = await addEventToDatabase({
       ...data,
@@ -90,19 +86,15 @@ export async function addEvent(prevState: EventState, formData: FormData): Promi
     if (!result.success) {
       return {
         errors: {
-          _form: [result.message || "Failed to add event"],
+          organizerEmail: ["Failed to add event"],
         },
-        success: false
+        success: false , 
+        message: "Event added successfully!",
       };
     }
-
-    // Refresh the events list
-    revalidatePath('/');
+    redirect("/admin/dashboard");
     
-    return {
-      success: true,
-      message: "Event added successfully!",
-    };
+ 
   } catch (err: any) {
     console.error("Error Adding Event", err);
     return {
