@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { addEvent } from "../../../../backend/controllers/eventsController";
+import { addEventToDb } from "../../../../backend/controllers/eventsController";
 import ROUTES from "../../../../lib/routes";
 // Define event input validation schema
 const eventSchema = z.object({
@@ -72,7 +72,7 @@ console.log(formData);
 
     const data = validationResult.data;
     // Call the event controller to handle the database operations
-    const result = await addEvent({
+    const result = await addEventToDb({
       ...data,
       image
     });

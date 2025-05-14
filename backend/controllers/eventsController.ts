@@ -37,7 +37,7 @@ try{
 
 }
 
-export async function addEvent(data: EventData) {
+export async function addEventToDb(data: EventData) {
   try {
     // Validate required fields
     if (!data.name || !data.organizerEmail ||  !data.category ||  !data.fees || !data.eventType || !data.date || !data.description || !data.image) {

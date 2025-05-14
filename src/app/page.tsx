@@ -7,10 +7,16 @@ export default async function UsersPage() {
   return (
     <div className="p-6 text-gray-600 mb-20">
       <h1 className="text-6xl font-bold mb-4">All Events</h1>
-      <div>
-        <p>on-line</p>
-        <p>in person</p>
-      </div>
+      <div className="flex gap-2">
+  <p className="flex items-center gap-1 bg-gray-200 p-1 rounded border border-blue-100 text-sm font-semibold">
+    <span className="bg-red-600 rounded-full w-2 h-2 inline-block"></span>
+    online
+  </p>
+  <p className="flex items-center gap-1 bg-gray-200 p-1 rounded border border-blue-100 text-sm font-semibold">
+    <span className="bg-pink-500 rounded-full w-2 h-2 inline-block"></span>
+    in person
+  </p>
+</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-5">
         {events.map((event: any) => (
           <div

@@ -38,9 +38,9 @@ async function handleDelete(formData: FormData) {
               <p className="text-gray-600 text-sm">{event.location || "N/A"}</p>
               {/* <p className="text-gray-600 text-sm">Type: {event.eventType}</p>
               <p className="text-gray-600 text-sm">Category: {event.eventCategory}</p> */}
-              <div className='flex gap-2'>
+              <div className='flex items-center justify-center gap-2'>
                  <p 
-            className="bg-emerald-800 text-white  py-2 my-4  rounded-md text-base cursor-pointer "    >
+            className= "mt-2 px-4 py-2 bg-emerald-800 text-white  rounded cursor-pointer "    >
              Edit </p>   
 
             <form action={handleDelete}>
