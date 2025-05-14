@@ -27,9 +27,19 @@ export type EventData = {
 };
 
 
+export async function deleteEvent(eventId:number){
+try{
+    await db.delete(schema.eventsTable).where(eq(schema.eventsTable.id, eventId)).returning();
+    return { success: true, message: "Event deleted successfully" };
 
+}catch(err:any){
+   console.error("Error deleting event:", err);
+    return { success: false, message: `Error deleting event: ${err.message}` };
+}
 
-export async function addEventToDatabase(data: EventData) {
+}
+
+export async function addEvent(data: EventData) {
   try {
     // Validate required fields
     if (!data.name || !data.organizerEmail || !data.totalAudienceLimit || !data.category || 

@@ -1,10 +1,19 @@
 // app/users/page.tsx
-import { getEvents } from '../../../../backend/controllers/eventsController';
+
+import { revalidatePath } from 'next/cache';
+import { getEvents , deleteEvent } from '../../../../backend/controllers/eventsController';
+import ROUTES from '../../../../lib/routes';
 
 export default async function UsersPage() {
   const users = await getEvents();
-
-  return (
+async function handleDelete(formData: FormData) {
+    'use server';
+    const eventId = Number(formData.get('eventId'));
+    await deleteEvent(eventId);
+    revalidatePath(ROUTES.ADMIN.DASHBOARD); // Auto refresh after delete
+  }
+ 
+   return (
     <div className="p-6">
       <h1 className="text-6xl font-bold mb-4">All Events</h1>
       <ul className="space-y-2">
@@ -12,7 +21,15 @@ export default async function UsersPage() {
           <li key={user.id} className="p-4 bg-gray-100 rounded">
             <p><strong>Name:</strong> {user.name}</p>
             <p><strong>Email:</strong> {user.email}</p>
-          </li>
+<form action={handleDelete}>
+              <input type="hidden" name="eventId" value={user.id} />
+              <button 
+                type="submit" 
+                className="mt-2 px-4 py-2 bg-red-500 text-white rounded cursor-pointer"
+              >
+                Delete
+              </button>
+            </form>          </li>
         ))}
       </ul>
     </div>
