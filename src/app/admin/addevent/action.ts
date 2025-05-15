@@ -86,6 +86,8 @@ console.log(formData);
         message: "Event added successfully!",
       };
     }
+        console.error("done Adding Event");
+
     redirect(ROUTES.ADMIN.DASHBOARD);
     
  

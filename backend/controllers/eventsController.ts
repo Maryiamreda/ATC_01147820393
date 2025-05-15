@@ -71,6 +71,7 @@ export async function addEventToDb(data: EventData) {
   eventCategory: data.category ,
   organizerEmail: data.organizerEmail,
 }).returning();
+    console.error("done Adding Event");
 
     return {
       success: true,
