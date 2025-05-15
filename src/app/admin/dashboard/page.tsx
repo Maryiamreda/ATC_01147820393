@@ -18,6 +18,10 @@ async function handleDelete(formData: FormData) {
   return (
     <div className="p-6 text-gray-600 mb-20">
       <h1 className="text-6xl font-bold mb-4">All Events</h1>
+      <Link
+      className="inline-block px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+
+       href={ROUTES.ADMIN.ADDEVENT}>Add New Even ?</Link>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-5">
         {events.map((event: any) => (
         <Link
