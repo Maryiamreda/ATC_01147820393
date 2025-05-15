@@ -2,6 +2,7 @@
 'use client';
 import React, { useContext, useState } from 'react';
 import { ThemeContext } from '@/context/ThemeProvider';
+import Image from 'next/image';
 
 const Form = ({ event }: { event: any }) => {
   const { elementColor, theme } = useContext(ThemeContext);
@@ -23,8 +24,15 @@ const Form = ({ event }: { event: any }) => {
       >
         <div className='flex items-center gap-4 mb-8 text-gray-500'>
           <label htmlFor='image'>
-            <img
-              src={selectedImage ? URL.createObjectURL(selectedImage) : event.img}
+           <Image
+              src={
+                selectedImage
+                  ? URL.createObjectURL(selectedImage)
+                  : event.img
+              }
+              alt="Event"
+              width={64}
+              height={64}
               className='w-16 h-16 object-cover cursor-pointer bg-gray-100 rounded-full'
             />
           </label>
