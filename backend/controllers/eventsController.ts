@@ -21,7 +21,7 @@ export type EventData = {
   date: string;
   location?: string;
   description: string;
-  image: File;
+  image?: File;
 };
 
 
@@ -60,7 +60,7 @@ export async function addEventToDb(data: EventData) {
    
 
     // Insert the event into the database
-   const newEvent = await db.insert(schema.eventsTable).values({
+  const newEvent = await db.insert(schema.eventsTable).values({
   name: data.name,
   image: imageUrl,
   fees: data.fees,
@@ -98,9 +98,11 @@ export async function getEvents(){
         throw err;
     }
  }
-export async function editEvent(eventId: number, field: string, value: any){
-  try{
- const event = await db.select()
+
+
+ export async function editEvent(eventId: number, updatedData: Partial<EventData>) {
+  try {
+    const event = await db.select()
       .from(schema.eventsTable)
       .where(eq(schema.eventsTable.id, eventId))
       .limit(1);
@@ -111,55 +113,53 @@ export async function editEvent(eventId: number, field: string, value: any){
         message: "Event not found",
       };
     }
-    let updateData: any = {};
-switch(field) {
-      case 'name':
-      case 'organizerEmail':
-      case 'description':
-      case 'eventType':
-      case 'location':
-        updateData[field] = value;
-        break;
-      case 'category':
-        updateData.eventCategory = value;
-        break;  
-      case 'fees':
-        // Ensure fees is a number
-        updateData.fees = Number(value);
-        break;
-      case 'date':
-        updateData.date = new Date(value).toISOString();
-        break;
-        default:
-        return {
-          success: false,
-          message: `Invalid field name: ${field}`,
-        };
 
-}
- updateData.updated_at = new Date().toISOString();
- const updatedEvent = await db.update(schema.eventsTable)
-      .set(updateData)
+    let imageUrl = undefined;
+
+    // Handle image upload if provided
+    if (updatedData.image) {
+      const buffer = await updatedData.image.arrayBuffer();
+      const base64Image = Buffer.from(buffer).toString('base64');
+      const dataURI = `data:${updatedData.image.type};base64,${base64Image}`;
+
+      const imageUpload = await cloudinary.uploader.upload(dataURI, {
+        resource_type: "image"
+      });
+
+      imageUrl = imageUpload.secure_url;
+    }
+
+    // Build update data safely
+    const dataToUpdate: any = {
+      updated_at: new Date().toISOString(),
+    };
+
+    if (updatedData.name) dataToUpdate.name = updatedData.name;
+    if (updatedData.organizerEmail) dataToUpdate.organizerEmail = updatedData.organizerEmail;
+    if (updatedData.category) dataToUpdate.eventCategory = updatedData.category;
+    if (updatedData.fees !== undefined) dataToUpdate.fees = updatedData.fees;
+    if (updatedData.eventType) dataToUpdate.eventType = updatedData.eventType;
+    if (updatedData.date) dataToUpdate.date = new Date(updatedData.date).toISOString();
+    if (updatedData.location) dataToUpdate.location = updatedData.location;
+    if (updatedData.description) dataToUpdate.description = updatedData.description;
+    if (imageUrl) dataToUpdate.image = imageUrl;
+
+    const updatedEvent = await db.update(schema.eventsTable)
+      .set(dataToUpdate)
       .where(eq(schema.eventsTable.id, eventId))
       .returning();
 
-return {
+    return {
       success: true,
-      message: `Event ${field} updated successfully`,
+      message: "Event updated successfully",
       event: updatedEvent[0]
     };
 
-
-  }catch(err:any){
-    console.error("Error Adding Event", err);
+  } catch (err: any) {
+    console.error("Error Updating Event", err);
     return {
       success: false,
-      message: `Error adding event: ${err.message}`,
+      message: `Error updating event: ${err.message}`,
     };
   }
 }
-
-
-
-
- 
