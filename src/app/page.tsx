@@ -1,5 +1,7 @@
+import Link from 'next/link';
 import { getEvents } from '../../backend/controllers/eventsController';
 import Image from 'next/image';
+import ROUTES from '../../lib/routes';
 
 export default async function UsersPage() {
   const events = await getEvents();
@@ -19,13 +21,14 @@ export default async function UsersPage() {
 </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-5">
         {events.map((event: any) => (
-          <div
-            key={event.id}
+          <Link
+           href={ROUTES.EVENTS.DETAILS(event.id)}       
+           key={event.id}
             className="border border-blue-200 overflow-hidden w-fit rounded-xl cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
           >
             {/* <div className='absolute  top-3 right-3 flex  gap-2'>
                <p className="bg-emerald-800 text-white  rounded-md text-base "    >on-line</p>
-        <p className="bg-emerald-800 text-white   rounded-md text-base  "    >in person</p>
+               <p className="bg-emerald-800 text-white   rounded-md text-base  "    >in person</p>
             </div> */}
             <Image
               className="bg-blue-50"
@@ -43,12 +46,12 @@ export default async function UsersPage() {
               {/* <p className="text-gray-600 text-sm">Type: {event.eventType}</p>
               <p className="text-gray-600 text-sm">Category: {event.eventCategory}</p> */}
               <button 
-      type='submit' 
-   className="bg-emerald-800 text-white w-full py-2 my-4  rounded-md text-base cursor-pointer "    >
-Book  Now !  </button>   
+               type='submit' 
+            className="bg-emerald-800 text-white w-full py-2 my-4  rounded-md text-base cursor-pointer hover:bg-emerald-700 "    >
+           Book  Now !  </button>   
             </div>
               
-          </div>
+          </Link>
         ))}
       </div>
     </div>

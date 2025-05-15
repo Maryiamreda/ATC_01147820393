@@ -99,6 +99,27 @@ export async function getEvents(){
     }
  }
 
+export async function getEventById(eventId: string) {
+      const eventIdNumber = parseInt(eventId, 10);
+       // Check if the eventIdNumber is a valid number
+ if (isNaN(eventIdNumber)) {
+      return null; 
+    }
+  try {
+   const [event] = await db
+      .select()
+      .from(schema.eventsTable)
+      .where(eq(schema.eventsTable.id, eventIdNumber))
+      .limit(1);
+    
+    return event || null;
+  } catch (error) {
+    console.error(`Error fetching event with ID ${eventId}:`, error);
+    throw new Error('Failed to fetch event details');
+  }
+}
+
+
 
  export async function editEvent(eventId: number, updatedData: Partial<EventData>) {
   try {

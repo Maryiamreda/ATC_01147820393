@@ -1,6 +1,9 @@
 export const ROUTES = {
 
     HOME: '/',
+     EVENTS: {
+    DETAILS: (eventId: any) => `/events/${eventId}`,
+  },
     ADMIN: {
     DASHBOARD: '/admin/dashboard',
     LOGIN: '/admin/login',
