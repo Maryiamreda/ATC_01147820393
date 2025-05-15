@@ -8,6 +8,8 @@ export const ROUTES = {
     DASHBOARD: '/admin/dashboard',
     LOGIN: '/admin/login',
     ADDEVENT: '/admin/addevent',
+    EDITEVENT:(eventId: any) => `/admin/editevent/${eventId}`,
+
   },
   USER:{
     LOGIN:'/user/login',

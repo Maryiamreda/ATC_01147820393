@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { getEvents , deleteEvent } from '../../../../backend/controllers/eventsController';
 import ROUTES from '../../../../lib/routes';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default async function UsersPage() {
   const events = await getEvents();
@@ -19,7 +20,8 @@ async function handleDelete(formData: FormData) {
       <h1 className="text-6xl font-bold mb-4">All Events</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-5">
         {events.map((event: any) => (
-          <div
+        <Link
+           href={ROUTES.ADMIN.EDITEVENT(event.id)}   
             key={event.id}
             className="border border-blue-200 overflow-hidden w-fit rounded-xl cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
           >
@@ -57,7 +59,7 @@ async function handleDelete(formData: FormData) {
              
             </div>
               
-          </div>
+          </Link>
         ))}
       </div>
     </div>
