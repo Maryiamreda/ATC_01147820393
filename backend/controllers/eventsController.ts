@@ -91,7 +91,6 @@ export async function getEvents(){
     try{
         const events = await db.select()
         .from(schema.eventsTable);
-        console.log(events)
         return events;
     
     }catch(err){
@@ -122,7 +121,7 @@ export async function getEventById(eventId: string) {
 
 
 
- export async function editEvent(eventId: number, updatedData: Partial<EventData>) {
+ export async function editEventDB(eventId: number, updatedData: Partial<EventData>) {
   try {
     const event = await db.select()
       .from(schema.eventsTable)
@@ -135,7 +134,7 @@ export async function getEventById(eventId: string) {
         message: "Event not found",
       };
     }
-
+console.log(event[0].name);
     let imageUrl = undefined;
 
     // Handle image upload if provided
@@ -151,9 +150,8 @@ export async function getEventById(eventId: string) {
       imageUrl = imageUpload.secure_url;
     }
 
-    // Build update data safely
-    const dataToUpdate: any = {
-      updated_at: new Date().toISOString(),
+     const dataToUpdate: any = {
+      updated_at: new Date()
     };
 
     if (updatedData.name) dataToUpdate.name = updatedData.name;
@@ -161,8 +159,9 @@ export async function getEventById(eventId: string) {
     if (updatedData.category) dataToUpdate.eventCategory = updatedData.category;
     if (updatedData.fees !== undefined) dataToUpdate.fees = updatedData.fees;
     if (updatedData.eventType) dataToUpdate.eventType = updatedData.eventType;
-    if (updatedData.date) dataToUpdate.date = new Date(updatedData.date).toISOString();
-    if (updatedData.location) dataToUpdate.location = updatedData.location;
+    if (updatedData.date) dataToUpdate.date = updatedData.date;
+
+  if (updatedData.location) dataToUpdate.location = updatedData.location;
     if (updatedData.description) dataToUpdate.description = updatedData.description;
     if (imageUrl) dataToUpdate.image = imageUrl;
 

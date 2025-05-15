@@ -3,15 +3,27 @@
 import React, { useContext, useState } from 'react';
 import { ThemeContext } from '@/context/ThemeProvider';
 import Image from 'next/image';
-
+import { useFormState } from 'react-dom';
+import { editEvent, EventState } from './actions';
+ const initialState = { 
+    errors: {}, 
+    message: '',
+    success: false 
+  };
 const Form = ({ event }: { event: any }) => {
   const { elementColor, theme } = useContext(ThemeContext);
+
+
+ const [state, formAction] = useFormState(
+    (prevState: EventState, formData: FormData) => editEvent(prevState, formData, event.id.toString()),
+    initialState
+  );
 
   // For previewing uploaded image if user changes it
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   return (
-    <form className='m-5 w-full text-start flex flex-col items-center justify-center'>
+    <form action={formAction} className='m-5 w-full text-start flex flex-col items-center justify-center'>
       <h2 className='text-5xl font-bold mb-4'>Edit Event</h2>
       <div
         className='admin-login px-8 py-8 border rounded w-full max-w-4xl text-start'
