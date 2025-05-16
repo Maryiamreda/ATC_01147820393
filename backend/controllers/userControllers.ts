@@ -34,11 +34,13 @@ export async function getallUsers() {
 }
 export async function bookEventDB(userId:number , eventId:number , quantity: number) {
   try{
+
+    
     const booking = await db.insert(schema.bookingsTable)
       .values({
-        userId: userId,
-        eventId: eventId,
-        quantity: quantity,
+        userId,
+        eventId,
+        quantity
       })
       .returning();
     

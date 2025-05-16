@@ -1,45 +1,54 @@
-import { revalidatePath } from "next/cache";
+'use server';
 import { bookEventDB } from "../../../../backend/controllers/userControllers";
 import { getUserFromSession } from "../../../../lib/auth";
+import { BookingState } from "./types"; // Import the type from separate file
 
 
 
-export type BookingState = {
-  errors?: {
-    quantity?: string[];
-    _form?: string[];
-  };
-  success?: boolean;
-  bookingId?: number;
-};
-
-// Define the initial state
-export const initialState: BookingState = {};
-
-export async function bookEvent( userId:number , eventId:number , quantity: number ) {
+export async function bookEvent(prevState: BookingState, formData: FormData) {
   try {
- 
-    
-    // Call the event controller to handle the database operations
-    const result = await bookEventDB(eventId, userId , quantity);
+    const user = await getUserFromSession();
 
-    if (!result.success) {
+    if (!user) {
       return {
-        errors: {
-          _form: [result.message || "Failed to update event"],
-        },
+        errors: { _form: ["You must be logged in to book an event"] },
         success: false
       };
     }
-    
-    
-    
-  } catch (err: any) {
-    console.error("Error updating event:", err);
+
+    const quantityStr = formData.get("quantity");
+    const eventIdStr = formData.get("eventId");
+
+    const quantity = quantityStr ? parseInt(quantityStr.toString(), 10) : 1;
+    const eventId = eventIdStr ? parseInt(eventIdStr.toString(), 10) : NaN;
+    const userId = user.userId ? parseInt(user.userId.toString(), 10) : NaN;
+
+
+    if (isNaN(quantity) || quantity < 1) {
+      return {
+        errors: { quantity: ["Please enter a valid quantity"] },
+        success: false
+      };
+    }
+
+    if (isNaN(eventId)) {
+      return {
+        errors: { _form: ["Invalid event ID"] },
+        success: false
+      };
+    }
+
+    const result = await bookEventDB(userId, eventId, quantity);
+
     return {
-      errors: {
-        _form: [`Error updating event: ${err.message}`],
-      },
+      success: true,
+      bookingId: result.id
+    };
+
+  } catch (err: any) {
+    console.error("Error booking event:", err);
+    return {
+      errors: { _form: [`Error booking event: ${err.message}`] },
       success: false
     };
   }
