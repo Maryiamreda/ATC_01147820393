@@ -32,7 +32,7 @@ export async function getallUsers() {
           throw err;
       }
 }
-export async function bookEvent(userId:number , eventId:number , quantity: number) {
+export async function bookEventDB(userId:number , eventId:number , quantity: number) {
   try{
     const booking = await db.insert(schema.bookingsTable)
       .values({
