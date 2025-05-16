@@ -7,11 +7,12 @@ import { getUserFromSession } from '../../../../lib/auth';
 import { getUserEvents } from '../../../../backend/controllers/userControllers';
 import EventDetails from './eventDetails';
 
-interface PageParams {
-  eventId: string;
-}
+type Props = {
+  params: { eventId: string };
+};
 
-export default async function EventDetailsPage({ params }: { params: PageParams }) {
+
+export default async function EventDetailsPage({ params }: Props) {
   const event = await getEventById(params.eventId);
   
   if (!event) {
