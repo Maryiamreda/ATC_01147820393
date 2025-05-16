@@ -2,6 +2,12 @@
 
 React project built with Next.js and Tailwind CSS for a full-stack event booking system assignment.
 
+# Live Demo
+
+```bash
+https://pum-i6du.vercel.app/
+```
+
 ## Setup Instructions
 
 ### Prerequisites
