@@ -37,13 +37,13 @@ export default async function EventDetailsPage({ params }: Props) {
           <div className="md:w-1/2 p-6">
             <div className="flex gap-2 mb-4">
               {event.eventType === 'online' && (
-              <p className="bg-blue-100 text-blue-800 p-1 px-2 rounded text-sm font-semibold">
+              <p className="bg-blue-100 text-blue-800 p-1 px-2 rounded text-sm font-semibold mr-1">
                   <span className="bg-red-600 rounded-full w-2 h-2 inline-block"></span>
                   online
                 </p>
               )}
               {event.eventType === 'in-person' && (
-              <p className="bg-blue-100 text-blue-800 p-1 px-2 rounded text-sm font-semibold">
+              <p className="bg-blue-100 text-blue-800 p-1 px-2 rounded text-sm font-semibold mr-1">
                   <span className="bg-pink-500 rounded-full w-2 h-2 inline-block"></span>
                   in person
                 </p>

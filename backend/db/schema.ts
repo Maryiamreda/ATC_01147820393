@@ -42,29 +42,29 @@ bookings: many(bookingsTable),
 
 }));
 
-export const usersToEventsTable = pgTable("users_to_events",{
-      userId: integer("user_id")
-          .notNull()
-          .references(() => usersTable.id),
-      eventId: integer("event_id")
-          .notNull()
-          .references(() => eventsTable.id),
-  },
-  (t) => ({
-      pk: primaryKey({ columns: [t.userId, t.eventId] })
-  })
-);
+// export const usersToEventsTable = pgTable("users_to_events",{
+//       userId: integer("user_id")
+//           .notNull()
+//           .references(() => usersTable.id),
+//       eventId: integer("event_id")
+//           .notNull()
+//           .references(() => eventsTable.id),
+//   },
+//   (t) => ({
+//       pk: primaryKey({ columns: [t.userId, t.eventId] })
+//   })
+// );
 
-export const usersToEventsRelations  = relations(usersToEventsTable, ({ one }) => ({
-  user: one(usersTable, {
-      fields: [usersToEventsTable.userId],
-      references: [usersTable.id],
-  }),
-  event: one(eventsTable, {
-      fields: [usersToEventsTable.eventId],
-      references: [eventsTable.id],
-  }),
-}));
+// export const usersToEventsRelations  = relations(usersToEventsTable, ({ one }) => ({
+//   user: one(usersTable, {
+//       fields: [usersToEventsTable.userId],
+//       references: [usersTable.id],
+//   }),
+//   event: one(eventsTable, {
+//       fields: [usersToEventsTable.eventId],
+//       references: [eventsTable.id],
+//   }),
+// }));
 
 
 export const bookingsTable = pgTable("event_bookings", {

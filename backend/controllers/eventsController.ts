@@ -1,6 +1,6 @@
 import { db } from "../index";
 import * as schema from '../db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, SQL } from 'drizzle-orm';
 import { v2 as cloudinary } from 'cloudinary';
 
 
@@ -99,6 +99,34 @@ export async function getEvents(){
     }
  }
 
+ export async function getOnlineEvents(){
+    try{
+        const events = await db.select()
+        .from(schema.eventsTable)
+        .where(eq(schema.eventsTable.eventType, 'online'))
+
+        return events;
+    
+    }catch(err){
+        console.error("Error fetching Events", err);
+        throw err;
+    }
+ }
+ 
+ export async function getOfflineEvents(){
+    try{
+        const events = await db.select()
+        .from(schema.eventsTable)
+        .where(eq(schema.eventsTable.eventType, 'in person'))
+
+        return events;
+    
+    }catch(err){
+        console.error("Error fetching Events", err);
+        throw err;
+    }
+ }
+
 export async function getEventById(eventId: string) {
       const eventIdNumber = parseInt(eventId, 10);
        // Check if the eventIdNumber is a valid number
@@ -184,3 +212,7 @@ console.log(event[0].name);
     };
   }
 }
+function where(arg0: SQL<unknown>) {
+  throw new Error("Function not implemented.");
+}
+
