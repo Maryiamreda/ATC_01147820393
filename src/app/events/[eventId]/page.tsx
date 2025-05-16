@@ -7,13 +7,13 @@ import { getUserFromSession } from '../../../../lib/auth';
 import { getUserEvents } from '../../../../backend/controllers/userControllers';
 import EventDetails from './eventDetails';
 
-type Props = {
-  params: { eventId: string };
+type paramsType = {
+  params: Promise<{ eventId: string }>;
 };
 
 
-export default async function EventDetailsPage({ params }: Props) {
-  const event = await getEventById(params.eventId);
+export default async function EventDetailsPage(props:paramsType) {
+  const {eventId} = await props.params
   
   if (!event) {
     notFound();
