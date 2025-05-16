@@ -15,7 +15,7 @@ type paramsType = {
 export default async function EventDetailsPage(props:paramsType) {
   const {eventId} = await props.params
   
-  if (!event) {
+  if (!eventId) {
     notFound();
   }
 const user = await getUserFromSession();
@@ -24,6 +24,6 @@ const user = await getUserFromSession();
 const usersevents=await getUserEvents(userId);
 console.log(usersevents)
   return (
-   <EventDetails  event={event} usersevents={usersevents}/>
+   <EventDetails  event={eventId} usersevents={usersevents}/>
   );
 }
