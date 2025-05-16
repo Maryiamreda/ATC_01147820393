@@ -42,7 +42,7 @@ const EventsList = ({ events, usersevents }: { events: any[], usersevents: any[]
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-5">
         {filteredEvents.map((event: any) => {
-          const isBooked = usersevents.some((userEvent) => userEvent.id === event.id);
+          const isBooked = usersevents.some((userEvent) => userEvent.eventId === event.id);
 
           return (
             <Link

@@ -7,16 +7,15 @@ import { notFound } from 'next/navigation';
 import ROUTES from '../../../../lib/routes';
 import { useEffect, useState } from 'react';
 const EventDetails = ({ event, usersevents }: { event: any, usersevents: any[] }) => {
-    const[booked,setBooked]=useState<boolean>(true)
-   const isEventBooked = (eventId: string) => {
-    return usersevents.some((userEvent) => userEvent.id === eventId);
-  };
+    const[booked,setBooked]=useState<boolean>(false)
+  const isEventBooked = (eventId: string) => {
+  return usersevents.some((userEvent) => userEvent.eventId === eventId);
+};
 
-  useEffect(() => {
-    if (isEventBooked(event.id)) {
-      setBooked(true);
-    }
-  }, [event.id, usersevents]);
+useEffect(() => {
+  const bookedStatus = isEventBooked(event.id);
+  setBooked(bookedStatus);
+}, [event.id, usersevents]);
   return (
     <div className="p-6 max-w-6xl mx-auto">
      
