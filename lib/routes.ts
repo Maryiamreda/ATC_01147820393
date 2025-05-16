@@ -14,7 +14,7 @@ export const ROUTES = {
   },
   USER:{
     LOGIN:'/user/login',
-    BOOKINGS:'/user/mybookings'
+    BOOKINGS:'/mybookings'
   },
   
 };

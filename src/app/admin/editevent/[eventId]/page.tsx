@@ -1,16 +1,10 @@
-import React from 'react';
 import { getEventById } from '../../../../../backend/controllers/eventsController';
 import Form from '../Form';
 
-type Props = {
-  params: { eventId: string };
-};
-
-export default async function EditEvent({ params }: Props) { 
+export default async function EditEvent({ params }: { params: { eventId: string } }) { 
     const event = await getEventById(params.eventId);
     
     return (
-    <Form event={event}/>
-  );
+        <Form event={event} />
+    );
 }
-
