@@ -2,14 +2,15 @@ import React from 'react';
 import { getEventById } from '../../../../../backend/controllers/eventsController';
 import Form from './Form';
 
-type Props = {
-  params: { eventId: string };
+type paramsType = {
+  params: Promise<{ eventId: string }>;
 };
-const BookEvent = async ({ params }: Props) => {
-    const event = await getEventById(params.eventId);
+
+const BookEvent = async (props:paramsType) => {
+  const {eventId} = await props.params
 
   return (
-    <Form event={event}/>
+    <Form event={eventId}/>
   );
 }
 
