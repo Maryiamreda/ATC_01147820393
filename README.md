@@ -10,6 +10,33 @@ React project built with Next.js and Tailwind CSS for a full-stack event booking
 - Supabase account
 - Drizzle ORM
 
+### Installation
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/Maryiamreda/Areeb-Technology-Competition
+cd Assessment
+```
+
+2. Install dependencies
+
+```bash
+npm install
+# or
+yarn
+```
+
+3. Start the development server
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+4. Open your browser and navigate to `http://localhost:3000`
+
 ## Features
 
 - Users can register and log in.
