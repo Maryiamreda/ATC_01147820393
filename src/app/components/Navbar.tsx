@@ -8,7 +8,6 @@ import {logout} from '../user/login/action'
 const Navbar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
      const themeContext = useContext(ThemeContext);
      
-  // Handle the case where ThemeContext is undefined
   if (!themeContext) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
