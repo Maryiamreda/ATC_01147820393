@@ -7,15 +7,15 @@ import { getUserFromSession } from '../../../../lib/auth';
 import { getUserEvents } from '../../../../backend/controllers/userControllers';
 import EventDetails from './eventDetails';
 
-type paramsType = {
-  params: Promise<{ eventId: string }>;
+type Props = {
+  params: { eventId: string };
 };
 
 
-export default async function EventDetailsPage(props:paramsType) {
-  const {eventId} = await props.params
+export default async function EventDetailsPage({ params }: Props) {
+  const event = await getEventById(params.eventId);
   
-  if (!eventId) {
+  if (!event) {
     notFound();
   }
 const user = await getUserFromSession();
@@ -24,6 +24,6 @@ const user = await getUserFromSession();
 const usersevents=await getUserEvents(userId);
 console.log(usersevents)
   return (
-   <EventDetails  event={eventId} usersevents={usersevents}/>
+   <EventDetails  event={event} usersevents={usersevents}/>
   );
 }

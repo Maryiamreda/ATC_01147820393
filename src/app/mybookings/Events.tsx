@@ -16,12 +16,12 @@ const Events = ({  usersevents }: {  usersevents: any[] }) => {
               className="border border-blue-200 bg-white rounded-xl overflow-hidden shadow-md hover:translate-y-[-5px] transition-all duration-300"
             >
                           <Image
-  className="bg-blue-50 object-cover"
-  src={event.image}
-  alt={event.name}
-  width={300}
-  height={200}
-/>
+                 className="bg-blue-50 object-cover"
+                  src={event.image}
+                  alt={event.name}
+                 width={300}
+              height={200}
+                   />
               <div className="p-4">
                 <h2 className="text-lg font-semibold text-gray-800">{event.name}</h2>
                 <p className="text-sm text-gray-500">{event.date}</p>
