@@ -6,15 +6,24 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ROUTES from '../../../../lib/routes';
 import { useEffect, useState } from 'react';
-const EventDetails = ({ event, usersevents }: { event: any, usersevents: any[] }) => {
+import router from 'next/router';
+const EventDetails = ({ event, usersevents , isLoggedIn  }: { event: any, usersevents: any[] , isLoggedIn: boolean }) => {
     const[booked,setBooked]=useState<boolean>(false)
   const isEventBooked = (eventId: string) => {
   return usersevents.some((userEvent) => userEvent.eventId === eventId);
 };
+ const handleBookClick = (eventId: number) => {
+    if (!isLoggedIn) {
+      router.push('/login');
+    } else {
+      router.push(ROUTES.EVENTS.BOOKEVENT(eventId));
+    }
+  };
 
 useEffect(() => {
   const bookedStatus = isEventBooked(event.id);
   setBooked(bookedStatus);
+
 }, [event.id, usersevents]);
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -70,25 +79,29 @@ useEffect(() => {
                  <p className="text-gray-600 whitespace-pre-line">
                    {event.description || "No description available for this event."}
                  </p>
-        </div>
-             
-            </div>
+               </div>
              {booked ? (
-                  <button
-                    disabled
-                    className="bg-gray-400 text-white w-full py-2 my-4 rounded-md text-base cursor-not-allowed"
-                  >
-                    Booked
-                  </button>
-                ) : (
-            <Link  href={ROUTES.EVENTS.BOOKEVENT(event.id)}
-
-            >
-              <button className="bg-emerald-800 text-white w-full py-3 rounded-md text-base font-medium cursor-pointer hover:bg-emerald-700">
-                Book Now!
+              <button
+                disabled
+                className="bg-gray-400 text-white w-full py-2 my-4 rounded-md text-base cursor-not-allowed"
+              >
+                Booked
               </button>
-            </Link>
-                )}
+            ) : isLoggedIn ? (
+              <Link href={ROUTES.EVENTS.BOOKEVENT(event.id)}>
+                <button className="bg-emerald-800 text-white w-full py-3 rounded-md text-base font-medium cursor-pointer hover:bg-emerald-700">
+                  Book Now!
+                </button>
+              </Link>
+            ) : (
+              <Link href="/user/login">
+                <button className="bg-emerald-800 text-white w-full py-3 rounded-md text-base font-medium cursor-pointer hover:bg-emerald-700">
+                  Book Now!
+                </button>
+              </Link>
+            )}
+            </div>
+           
           </div>
         </div>
         

@@ -19,11 +19,13 @@ export default async function EventDetailsPage({ params }: Props) {
     notFound();
   }
 const user = await getUserFromSession();
-  const userId = user?.userId ? parseInt(user.userId.toString(), 10) : NaN;
+const userId = user?.userId ? parseInt(user.userId.toString(), 10) : NaN;
 
-const usersevents=await getUserEvents(userId);
+  const usersevents = !isNaN(userId) ? await getUserEvents(userId) : [];
+  const isLoggedIn = !!user?.userId;
+
 console.log(usersevents)
   return (
-   <EventDetails  event={event} usersevents={usersevents}/>
+   <EventDetails  event={event} usersevents={usersevents} isLoggedIn={isLoggedIn}/>
   );
 }

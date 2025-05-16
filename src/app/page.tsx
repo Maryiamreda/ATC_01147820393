@@ -9,7 +9,10 @@ export default async function UsersPage() {
   const user = await getUserFromSession();
   const userId = user?.userId ? parseInt(user.userId.toString(), 10) : NaN;
 
-const usersevents=await getUserEvents(userId);
-console.log(usersevents)
-  return <EventsList events={events} usersevents={usersevents}    />;
+  // check if theres no user 
+  const usersevents = !isNaN(userId) ? await getUserEvents(userId) : [];
+
+  console.log("User events:", usersevents);
+
+  return <EventsList events={events} usersevents={usersevents} />;
 }
