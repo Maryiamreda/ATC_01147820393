@@ -3,6 +3,7 @@ export const ROUTES = {
     HOME: '/',
      EVENTS: {
     DETAILS: (eventId: any) => `/events/${eventId}`,
+     BOOKEVENT:(eventId: any) => `/events/booking/${eventId}`,
   },
     ADMIN: {
     DASHBOARD: '/admin/dashboard',
@@ -14,6 +15,7 @@ export const ROUTES = {
   USER:{
     LOGIN:'/user/login',
     BOOKINGS:'/user/mybookings'
-  }
+  },
+  
 };
 export default ROUTES;

@@ -32,6 +32,19 @@ export async function getallUsers() {
           throw err;
       }
 }
+
+export async function getUserEvents(userId:number) {
+  try{
+      const userEvents = await db.select()
+          .from(schema.bookingsTable)
+          .where(eq(schema.bookingsTable.userId,userId))
+          console.log(userEvents)
+          return userEvents;
+  }catch(err:any){
+     console.error("Error getting Events", err);
+        throw err;
+  }
+}
 export async function bookEventDB(userId:number , eventId:number , quantity: number) {
   try{
 

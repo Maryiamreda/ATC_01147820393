@@ -23,14 +23,23 @@ const [state, formAction] = useFormState(bookEvent, initialState);
      
   return (
     <>
-    <form action={formAction} >
-      you are booking tickets for {event?.name} at {event?.location}, {event?.date}
-      please specify the no of tickets you want 
-      <input type='number' name='quantity' min={1} defaultValue={1}/>
+    <form action={formAction} className="bg-white rounded-xl shadow-lg mt-6 p-6 max-w-md mx-auto space-y-6" >
+        <div className='flex flex-col'>
+            <p  className='text-xl font-bold text-gray-800 mb-2'> you are booking tickets for ( {event?.name} ) at {event?.location}, {event?.date}
+     </p>
+          <div><p className='font-semibold text-lg text-gray-800 mb-1'>  please specify the no of tickets you want :</p>
+           <input type='number' name='quantity' min={1} defaultValue={1} 
+        className="border border-gray-300 rounded px-3 py-2   w-14"
+
+      />
+          </div>  
+     
             <input type="hidden" name="eventId" value={event.id} />
 
-      <button type='submit'>BOOK</button>
+      <button type='submit' className='bg-emerald-800 px-10 py-3 mt-4 text-white rounded-full cursor-pointer'>BOOK</button>
       
+        </div>
+     
     </form>
      {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
